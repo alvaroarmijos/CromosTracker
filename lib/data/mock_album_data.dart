@@ -2,6 +2,33 @@ import 'package:cromostracker/models/album_model.dart';
 import 'package:cromostracker/models/cromo_estado.dart';
 import 'package:cromostracker/models/cromo_model.dart';
 
+/// Album with no stickers in [CromoEstado.swap] (empty Intercambios tab).
+AlbumModel createNoSwapAlbum() {
+  const cromos = <CromoModel>[
+    CromoModel(
+      id: 'ns-1',
+      numero: 1,
+      seccion: 'Demo',
+      tipo: 'normal',
+      estado: CromoEstado.missing,
+    ),
+    CromoModel(
+      id: 'ns-2',
+      numero: 2,
+      seccion: 'Demo',
+      tipo: 'normal',
+      estado: CromoEstado.owned,
+    ),
+  ];
+
+  return AlbumModel(
+    nombre: 'Sin swaps',
+    year: 2026,
+    totalCromos: cromos.length,
+    cromos: List<CromoModel>.from(cromos),
+  );
+}
+
 /// In-memory seed album for Part 1 (replace with repository later).
 AlbumModel createMockAlbum() {
   const cromos = <CromoModel>[

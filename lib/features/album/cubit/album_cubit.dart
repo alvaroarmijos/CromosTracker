@@ -8,6 +8,9 @@ class AlbumCubit extends Cubit<AlbumState> {
 
   void tapCromo(String id) {
     final album = state.album;
+    if (!album.cromos.any((c) => c.id == id)) {
+      return;
+    }
     final next = album.cromos.map((c) {
       if (c.id != id) return c;
       return applyTap(c, album);

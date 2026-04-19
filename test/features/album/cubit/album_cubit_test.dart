@@ -46,5 +46,12 @@ void main() {
         ),
       ],
     );
+
+    blocTest<AlbumCubit, AlbumState>(
+      'tap unknown id does not emit',
+      build: () => AlbumCubit(base),
+      act: (c) => c.tapCromo('no-such-id'),
+      expect: () => <AlbumState>[],
+    );
   });
 }

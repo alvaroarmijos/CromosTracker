@@ -1,16 +1,12 @@
+import 'package:cromostracker/constants/ui_keys.dart';
 import 'package:cromostracker/features/album/cubit/album_cubit.dart';
 import 'package:cromostracker/features/album/cubit/album_state.dart';
+import 'package:cromostracker/widgets/coming_soon_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StatsPage extends StatelessWidget {
   const StatsPage({super.key});
-
-  static void _comingSoon(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Próximamente')),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +23,7 @@ class StatsPage extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.share_outlined),
                 tooltip: 'Compartir',
-                onPressed: () => _comingSoon(context),
+                onPressed: () => showComingSoonSnackBar(context),
               ),
             ],
           ),
@@ -62,31 +58,37 @@ class StatsPage extends StatelessWidget {
                   childAspectRatio: 1.6,
                   children: [
                     _OverviewCard(
+                      overviewValueKey: UiKeys.statTotalValue,
                       label: 'Total',
                       value: s.total,
                       icon: Icons.collections_outlined,
                     ),
                     _OverviewCard(
+                      overviewValueKey: UiKeys.statFaltantesValue,
                       label: 'Faltantes',
                       value: s.missingCount,
                       icon: Icons.search_off_outlined,
                     ),
                     _OverviewCard(
+                      overviewValueKey: UiKeys.statColeccionValue,
                       label: 'En colección',
                       value: s.ownedCount,
                       icon: Icons.inventory_2_outlined,
                     ),
                     _OverviewCard(
+                      overviewValueKey: UiKeys.statIntercambiosValue,
                       label: 'Intercambios',
                       value: s.swapStickerCount,
                       icon: Icons.swap_horiz_outlined,
                     ),
                     _OverviewCard(
+                      overviewValueKey: UiKeys.statDuplicadosValue,
                       label: 'Duplicados',
                       value: s.duplicateUnits,
                       icon: Icons.add_circle_outline,
                     ),
                     _OverviewCard(
+                      overviewValueKey: UiKeys.statEspecialesValue,
                       label: 'Especiales',
                       value: s.specialsCount,
                       icon: Icons.star_outline,
@@ -96,6 +98,7 @@ class StatsPage extends StatelessWidget {
                 const SizedBox(height: 32),
                 Text(
                   'Progreso',
+                  key: UiKeys.statsProgresoTitle,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 12),
@@ -111,11 +114,13 @@ class StatsPage extends StatelessWidget {
 
 class _OverviewCard extends StatelessWidget {
   const _OverviewCard({
+    required this.overviewValueKey,
     required this.label,
     required this.value,
     required this.icon,
   });
 
+  final Key overviewValueKey;
   final String label;
   final int value;
   final IconData icon;
@@ -139,6 +144,7 @@ class _OverviewCard extends StatelessWidget {
             const Spacer(),
             Text(
               '$value',
+              key: overviewValueKey,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w700,
               ),

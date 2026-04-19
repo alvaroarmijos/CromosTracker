@@ -1,3 +1,4 @@
+import 'package:cromostracker/constants/ui_keys.dart';
 import 'package:cromostracker/features/album/view/album_page.dart';
 import 'package:cromostracker/features/settings/view/settings_page.dart';
 import 'package:cromostracker/features/stats/view/stats_page.dart';
@@ -31,12 +32,13 @@ class _ShellPageState extends State<ShellPage> {
         onDestinationSelected: (i) => setState(() => _index = i),
         destinations: const [
           NavigationDestination(
+            key: UiKeys.navAlbum,
             icon: Icon(Icons.photo_album_outlined),
             selectedIcon: Icon(Icons.photo_album),
             label: 'Álbum',
           ),
           NavigationDestination(
-            key: Key('nav_stats'),
+            key: UiKeys.navStats,
             icon: Icon(Icons.bar_chart_outlined),
             selectedIcon: Icon(Icons.bar_chart),
             label: 'Stats',

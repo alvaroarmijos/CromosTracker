@@ -1,9 +1,11 @@
+import 'package:cromostracker/constants/ui_keys.dart';
 import 'package:cromostracker/features/album/cubit/album_cubit.dart';
 import 'package:cromostracker/features/album/cubit/album_state.dart';
 import 'package:cromostracker/features/album/widgets/cromo_sticker_tile.dart';
 import 'package:cromostracker/models/album_model.dart';
 import 'package:cromostracker/models/cromo_estado.dart';
 import 'package:cromostracker/models/cromo_model.dart';
+import 'package:cromostracker/widgets/coming_soon_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,12 +13,6 @@ enum _AlbumFilter { all, missing, swaps }
 
 class AlbumPage extends StatelessWidget {
   const AlbumPage({super.key});
-
-  static void _comingSoon(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Próximamente')),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,17 +46,17 @@ class AlbumPage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.lock_outline),
               tooltip: 'Candado',
-              onPressed: () => _comingSoon(context),
+              onPressed: () => showComingSoonSnackBar(context),
             ),
             IconButton(
               icon: const Icon(Icons.share_outlined),
               tooltip: 'Compartir',
-              onPressed: () => _comingSoon(context),
+              onPressed: () => showComingSoonSnackBar(context),
             ),
             IconButton(
               icon: const Icon(Icons.more_vert),
               tooltip: 'Menú',
-              onPressed: () => _comingSoon(context),
+              onPressed: () => showComingSoonSnackBar(context),
             ),
           ],
         ),
@@ -68,9 +64,9 @@ class AlbumPage extends StatelessWidget {
           children: [
             const TabBar(
               tabs: [
-                Tab(text: 'Todos'),
-                Tab(text: 'Faltantes'),
-                Tab(text: 'Intercambios'),
+                Tab(key: UiKeys.albumTabTodos, text: 'Todos'),
+                Tab(key: UiKeys.albumTabFaltantes, text: 'Faltantes'),
+                Tab(key: UiKeys.albumTabIntercambios, text: 'Intercambios'),
               ],
             ),
             Expanded(
@@ -154,60 +150,66 @@ class _AlbumTabBody extends StatelessWidget {
     final sections = _groupBySection(items);
     final keys = sections.keys.toList();
 
+    // CustomScrollView + SliverGrid avoids nested ListView/GridView shrinkWrap
+    // for large albums; revisit with a single SliverChildBuilderDelegate if
+    // profiling shows jank with many sections.
     return LayoutBuilder(
       builder: (context, constraints) {
         final cols = _gridColumnCount(constraints.maxWidth);
-        return ListView.builder(
-          padding: const EdgeInsets.only(bottom: 24),
-          itemCount: keys.length,
-          itemBuilder: (context, index) {
-            final sectionName = keys[index];
-            final sectionItems = sections[sectionName]!;
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+        return CustomScrollView(
+          slivers: [
+            for (var index = 0; index < keys.length; index++) ...[
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    16,
+                    index == 0 ? 16 : 24,
+                    16,
+                    0,
+                  ),
+                  child: Row(
                     children: [
                       Icon(
-                        _sectionIcon(sectionName),
+                        _sectionIcon(keys[index]),
                         size: 22,
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          sectionName,
+                          keys[index],
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: cols,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 0.92,
-                    ),
-                    itemCount: sectionItems.length,
-                    itemBuilder: (context, i) {
-                      final c = sectionItems[i];
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                sliver: SliverGrid(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: cols,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 0.92,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, i) {
+                      final c = sections[keys[index]]![i];
                       return CromoStickerTile(
                         key: ValueKey<String>('cromo-${c.id}'),
                         cromo: c,
                         onTap: () => context.read<AlbumCubit>().tapCromo(c.id),
                       );
                     },
+                    childCount: sections[keys[index]]!.length,
                   ),
-                ],
+                ),
               ),
-            );
-          },
+            ],
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+          ],
         );
       },
     );
