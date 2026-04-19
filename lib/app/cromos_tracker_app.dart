@@ -1,5 +1,5 @@
 import 'package:cromostracker/app/shell_page.dart';
-import 'package:cromostracker/data/mock_album_data.dart';
+import 'package:cromostracker/data/panini_wc26/panini_wc26_album.dart';
 import 'package:cromostracker/features/album/cubit/album_cubit.dart';
 import 'package:cromostracker/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ class CromosTrackerApp extends StatelessWidget {
     this.albumCubit,
   });
 
-  /// Injected in tests; default uses [createMockAlbum].
+  /// Injected in tests; default uses [buildPaniniMundial2026Album].
   final AlbumCubit? albumCubit;
 
   @override
@@ -25,7 +25,7 @@ class CromosTrackerApp extends StatelessWidget {
       return BlocProvider.value(value: albumCubit!, child: child);
     }
     return BlocProvider(
-      create: (_) => AlbumCubit(createMockAlbum()),
+      create: (_) => AlbumCubit(buildPaniniMundial2026Album()),
       child: child,
     );
   }

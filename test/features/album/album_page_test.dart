@@ -5,28 +5,34 @@ import 'package:cromostracker/features/album/cubit/album_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../album_fixtures.dart';
 import '../../test_ui_strings.dart';
+
+AlbumCubit _lightCubit() => AlbumCubit(createLightWidgetTestAlbum());
 
 void main() {
   testWidgets('Faltantes tab removes sticker after tap changes state', (
     tester,
   ) async {
-    await tester.pumpWidget(const CromosTrackerApp());
+    await tester.pumpWidget(CromosTrackerApp(albumCubit: _lightCubit()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(UiKeys.albumTabFaltantes));
     await tester.pumpAndSettle();
 
-    expect(find.byKey(const ValueKey<String>('cromo-c-1')), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey<String>('cromo-wc26-001')),
+      findsOneWidget,
+    );
 
-    await tester.tap(find.byKey(const ValueKey<String>('cromo-c-1')));
+    await tester.tap(find.byKey(const ValueKey<String>('cromo-wc26-001')));
     await tester.pumpAndSettle();
 
-    expect(find.byKey(const ValueKey<String>('cromo-c-1')), findsNothing);
+    expect(find.byKey(const ValueKey<String>('cromo-wc26-001')), findsNothing);
   });
 
   testWidgets('bottom nav switches to Stats', (tester) async {
-    await tester.pumpWidget(const CromosTrackerApp());
+    await tester.pumpWidget(CromosTrackerApp(albumCubit: _lightCubit()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(UiKeys.navStats));
@@ -39,7 +45,7 @@ void main() {
   testWidgets('Stats Faltantes decreases after claiming a missing cromo', (
     tester,
   ) async {
-    await tester.pumpWidget(const CromosTrackerApp());
+    await tester.pumpWidget(CromosTrackerApp(albumCubit: _lightCubit()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(UiKeys.navStats));
@@ -54,7 +60,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(UiKeys.albumTabFaltantes));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey<String>('cromo-c-1')));
+    await tester.tap(find.byKey(const ValueKey<String>('cromo-wc26-001')));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(UiKeys.navStats));
@@ -82,19 +88,19 @@ void main() {
   });
 
   testWidgets('cromo tile exposes expected semantic label', (tester) async {
-    await tester.pumpWidget(const CromosTrackerApp());
+    await tester.pumpWidget(CromosTrackerApp(albumCubit: _lightCubit()));
     await tester.pumpAndSettle();
 
     final handle = tester.ensureSemantics();
     final node = tester.getSemantics(
-      find.byKey(const ValueKey<String>('cromo-c-1')),
+      find.byKey(const ValueKey<String>('cromo-wc26-001')),
     );
     final label = node.label;
     handle.dispose();
 
     expect(label, isNotNull);
     expect(label, contains('Cromo número 1'));
-    expect(label, contains('Fase de grupos'));
+    expect(label, contains('Introducción'));
     expect(label, contains('falta'));
   });
 }

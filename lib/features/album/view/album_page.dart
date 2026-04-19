@@ -134,6 +134,11 @@ class _AlbumTabBody extends StatelessWidget {
     final n = sectionName.toLowerCase();
     if (n.contains('estadio')) return Icons.stadium_outlined;
     if (n.contains('leyenda')) return Icons.military_tech_outlined;
+    if (n.contains('introducción')) return Icons.info_outline;
+    if (n.contains('calendario')) return Icons.event_outlined;
+    if (n.contains('historia')) return Icons.auto_stories_outlined;
+    if (n.contains('camino')) return Icons.route_outlined;
+    if (n.contains('récord')) return Icons.leaderboard_outlined;
     if (n.contains('grupo') || n.contains('fase')) {
       return Icons.emoji_events_outlined;
     }

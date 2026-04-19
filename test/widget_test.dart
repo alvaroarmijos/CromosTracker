@@ -6,7 +6,7 @@ void main() {
     await tester.pumpWidget(const CromosTrackerApp());
     await tester.pumpAndSettle();
 
-    expect(find.text('Mundial Demo (6)'), findsOneWidget);
+    expect(find.text('Copa Mundial FIFA 26 (980)'), findsOneWidget);
     expect(find.text('Álbum'), findsOneWidget);
     expect(find.text('Stats'), findsOneWidget);
   });

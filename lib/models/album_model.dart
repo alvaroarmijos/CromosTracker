@@ -11,6 +11,7 @@ class AlbumModel extends Equatable {
     required this.totalCromos,
     required this.cromos,
     this.maxDuplicateCount = 9,
+    this.albumLayoutVersion = 1,
   }) : assert(maxDuplicateCount >= 1, 'maxDuplicateCount must be >= 1');
 
   final String nombre;
@@ -22,12 +23,16 @@ class AlbumModel extends Equatable {
   final List<CromoModel> cromos;
   final int maxDuplicateCount;
 
+  /// Bump when sticker order/numbering changes for the same stable [CromoModel.id]s.
+  final int albumLayoutVersion;
+
   AlbumModel copyWith({
     String? nombre,
     int? year,
     int? totalCromos,
     List<CromoModel>? cromos,
     int? maxDuplicateCount,
+    int? albumLayoutVersion,
   }) {
     return AlbumModel(
       nombre: nombre ?? this.nombre,
@@ -35,6 +40,7 @@ class AlbumModel extends Equatable {
       totalCromos: totalCromos ?? this.totalCromos,
       cromos: cromos ?? this.cromos,
       maxDuplicateCount: maxDuplicateCount ?? this.maxDuplicateCount,
+      albumLayoutVersion: albumLayoutVersion ?? this.albumLayoutVersion,
     );
   }
 
@@ -45,5 +51,6 @@ class AlbumModel extends Equatable {
     totalCromos,
     cromos,
     maxDuplicateCount,
+    albumLayoutVersion,
   ];
 }
