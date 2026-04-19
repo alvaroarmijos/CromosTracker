@@ -1,0 +1,10 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - build/**
+
+linter:
+  rules:
+    # App UI and feature code; Part 2 can tighten for packages.
+    public_member_api_docs: false
