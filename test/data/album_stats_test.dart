@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('mock album total matches list length', () {
     final a = createMockAlbum();
+    expect(a.totalCromos, 6);
     expect(a.totalCromos, a.cromos.length);
   });
 

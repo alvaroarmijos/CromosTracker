@@ -6,7 +6,7 @@ void main() {
     await tester.pumpWidget(const CromosTrackerApp());
     await tester.pumpAndSettle();
 
-    expect(find.text('Mundial Demo (4)'), findsOneWidget);
+    expect(find.text('Mundial Demo (6)'), findsOneWidget);
     expect(find.text('Álbum'), findsOneWidget);
     expect(find.text('Stats'), findsOneWidget);
   });

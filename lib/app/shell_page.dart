@@ -36,6 +36,7 @@ class _ShellPageState extends State<ShellPage> {
             label: 'Álbum',
           ),
           NavigationDestination(
+            key: Key('nav_stats'),
             icon: Icon(Icons.bar_chart_outlined),
             selectedIcon: Icon(Icons.bar_chart),
             label: 'Stats',

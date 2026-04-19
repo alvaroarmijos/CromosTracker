@@ -11,6 +11,7 @@ AlbumModel createMockAlbum() {
       seccion: 'Fase de grupos',
       tipo: CromoModel.tipoSpecial,
       estado: CromoEstado.missing,
+      pais: 'Qatar',
     ),
     CromoModel(
       id: 'c-2',
@@ -18,6 +19,7 @@ AlbumModel createMockAlbum() {
       seccion: 'Fase de grupos',
       tipo: 'normal',
       estado: CromoEstado.owned,
+      pais: 'España',
     ),
     CromoModel(
       id: 'c-3',
@@ -26,12 +28,28 @@ AlbumModel createMockAlbum() {
       tipo: 'normal',
       estado: CromoEstado.swap,
       swapCount: 1,
+      pais: 'Brasil',
     ),
     CromoModel(
       id: 'c-4',
       numero: 10,
       seccion: 'Estadios',
       tipo: 'normal',
+      estado: CromoEstado.missing,
+    ),
+    CromoModel(
+      id: 'c-5',
+      numero: 11,
+      seccion: 'Estadios',
+      tipo: 'normal',
+      estado: CromoEstado.owned,
+      pais: 'Ecuador',
+    ),
+    CromoModel(
+      id: 'c-6',
+      numero: 50,
+      seccion: 'Leyendas',
+      tipo: CromoModel.tipoSpecial,
       estado: CromoEstado.missing,
     ),
   ];
