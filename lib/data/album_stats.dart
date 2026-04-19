@@ -36,8 +36,9 @@ class AlbumStats extends Equatable {
       }
     }
 
+    // Denominator matches the list we iterated (avoids totalCromos skew).
     return AlbumStats(
-      total: album.totalCromos,
+      total: album.cromos.length,
       missingCount: missing,
       ownedCount: owned,
       swapStickerCount: swapStickers,

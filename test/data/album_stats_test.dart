@@ -1,15 +1,26 @@
 import 'package:cromostracker/data/album_stats.dart';
-import 'package:cromostracker/data/mock_album_data.dart';
 import 'package:cromostracker/models/album_model.dart';
 import 'package:cromostracker/models/cromo_estado.dart';
 import 'package:cromostracker/models/cromo_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('mock album total matches list length', () {
-    final a = createMockAlbum();
-    expect(a.totalCromos, 6);
-    expect(a.totalCromos, a.cromos.length);
+  test('AlbumStats.total follows cromos length when totalCromos disagrees', () {
+    final album = AlbumModel(
+      nombre: 'Test',
+      year: 2026,
+      totalCromos: 99,
+      cromos: const [
+        CromoModel(
+          id: 'only',
+          numero: 1,
+          seccion: 'S',
+          tipo: 'normal',
+          estado: CromoEstado.missing,
+        ),
+      ],
+    );
+    expect(AlbumStats.fromAlbum(album).total, 1);
   });
 
   test('AlbumStats matches fixture expectations', () {
